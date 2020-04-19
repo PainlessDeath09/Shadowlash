@@ -15,7 +15,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Player
   - 
   - 
   - 
@@ -40,8 +40,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Background_Sun
+  - name: Background_1
     uniqueID: 20698869
+    locked: 0
+  - name: Background_2
+    uniqueID: 3183816411
+    locked: 0
+  - name: Background_3
+    uniqueID: 2543893151
+    locked: 0
+  - name: Background_4
+    uniqueID: 180907917
+    locked: 0
+  - name: Background_clouds
+    uniqueID: 3258659305
     locked: 0
   - name: Default
     uniqueID: 0
