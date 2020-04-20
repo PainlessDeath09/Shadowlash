@@ -4,15 +4,14 @@ using UnityEngine.Events;
 public class CharacterController2D : MonoBehaviour
 {
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
-	[SerializeField] private float m_CrouchSpeed = 2f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
+	[SerializeField] private float m_CrouchSpeed = 1.5f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
 	private float m_sprintSpeed = 1.5f;
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
 	[SerializeField] private bool m_AirControl = true;							// Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
-	[SerializeField] private Collider2D m_CrouchDisableCollider;    // A collider that will be disabled when crouching
-	[Range(0, 30)] public float timeLeft = 2f;
+	[SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
@@ -20,7 +19,6 @@ public class CharacterController2D : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
-	
 
 	[Header("Events")]
 	[Space]
@@ -92,7 +90,7 @@ public class CharacterController2D : MonoBehaviour
 
 
 			// If crouching
-			if (crouch && !sprint)
+			if (crouch)
 			{
 				if (!m_wasCrouching)
 				{
@@ -100,25 +98,12 @@ public class CharacterController2D : MonoBehaviour
 					OnCrouchEvent.Invoke(true);
 				}
 
-
 				// Reduce the speed by the crouchSpeed multiplier
-				//move *= 1.8f;
-				if (m_FacingRight)
-					move = 1;
-				else
-					move = -1;
-				timeLeft -= 2f;
-				if (timeLeft != 0)
-				{
-					Move(move * 1.5f, false, false, false);
-				}
+				move *= m_CrouchSpeed;
+
 				// Disable one of the colliders when crouching
 				if (m_CrouchDisableCollider != null)
 					m_CrouchDisableCollider.enabled = false;
-
-				//Vector3 targetVeloc = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
-				//m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVeloc, ref m_Velocity, m_MovementSmoothing);
-
 			} else
 			{
 				// Enable the collider when not crouching
