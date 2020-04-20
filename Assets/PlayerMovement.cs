@@ -25,10 +25,12 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetButtonDown("Crouch"))
         {
+            animator.SetBool("IsRolling",true);
             crouch = true;
         }
         if (Input.GetButtonUp("Crouch"))
         {
+            animator.SetBool("IsRolling", false);
             crouch = false;
         }
         if (Input.GetButtonDown("Sprint"))
