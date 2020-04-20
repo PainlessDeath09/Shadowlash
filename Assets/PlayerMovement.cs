@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
 
     float HorizontalMove = 0f;
     public float runSpeed = 45f;
+    public float rollSpeed;
+    public float rollTime;
+
     bool jump = false, crouch = false, sprint = false;
 
     // Update is called once per frame
