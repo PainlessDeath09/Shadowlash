@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
             jump = true;
             animator.SetBool("IsJumping", true);
         }
-        if (Input.GetButtonDown("Crouch"))
+        /*if (Input.GetButtonDown("Crouch"))
         {
             animator.SetBool("IsRolling",true);
             crouch = true;
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("IsRolling", false);
             crouch = false;
-        }
+        }*/
         if (Input.GetButtonDown("Sprint"))
         {
             sprint = true;

@@ -4,14 +4,15 @@ using UnityEngine.Events;
 public class CharacterController2D : MonoBehaviour
 {
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
-	[SerializeField] private float m_CrouchSpeed = 1.5f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
+	[SerializeField] private float m_CrouchSpeed = 2f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
 	private float m_sprintSpeed = 1.5f;
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
 	[SerializeField] private bool m_AirControl = true;							// Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
-	[SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
+	[SerializeField] private Collider2D m_CrouchDisableCollider;    // A collider that will be disabled when crouching
+	public float timeLeft = 5.0f;
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
@@ -19,6 +20,7 @@ public class CharacterController2D : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
+	
 
 	[Header("Events")]
 	[Space]
@@ -90,22 +92,39 @@ public class CharacterController2D : MonoBehaviour
 
 
 			// If crouching
-			if (crouch)
+			if (crouch && !sprint && timeLeft > 0)
 			{
-				if (!m_wasCrouching)
+				while (timeLeft > 0)
 				{
-					m_wasCrouching = true;
-					OnCrouchEvent.Invoke(true);
+					if (!m_wasCrouching)
+					{
+						m_wasCrouching = true;
+						OnCrouchEvent.Invoke(true);
+					}
+
+
+					// Reduce the speed by the crouchSpeed multiplier
+					//move *= 1.8f;
+					if (m_FacingRight)
+						move = 1;
+					else
+						move = -1;
+
+
+					Vector3 targetVeloc = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+					m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVeloc, ref m_Velocity, m_MovementSmoothing);
+					timeLeft -= Time.fixedDeltaTime;
+
+					// Disable one of the colliders when crouching
+					if (m_CrouchDisableCollider != null)
+						m_CrouchDisableCollider.enabled = false;
+
+					//Vector3 targetVeloc = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+					//m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVeloc, ref m_Velocity, m_MovementSmoothing);
 				}
-
-				// Reduce the speed by the crouchSpeed multiplier
-				move *= m_CrouchSpeed;
-
-				// Disable one of the colliders when crouching
-				if (m_CrouchDisableCollider != null)
-					m_CrouchDisableCollider.enabled = false;
 			} else
 			{
+				timeLeft = 5.0f;
 				// Enable the collider when not crouching
 				if (m_CrouchDisableCollider != null)
 					m_CrouchDisableCollider.enabled = true;
