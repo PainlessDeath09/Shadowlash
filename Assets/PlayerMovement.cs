@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
+        /* 
+         * Proceeding code is for PC controls
+         * 
         HorizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
         animator.SetFloat("Speed", Mathf.Abs(HorizontalMove));
 
@@ -32,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("IsRolling", false);
             crouch = false;
-        }*/
+        }
         if (Input.GetButtonDown("Sprint"))
         {
             sprint = true;
@@ -40,6 +43,15 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonUp("Sprint"))
         {
             sprint = false;
+        }
+        *
+        *
+        */
+
+
+        if(Input.touchCount > 0)
+        {
+           Touch t =  Input.GetTouch(0);
         }
 
     }
