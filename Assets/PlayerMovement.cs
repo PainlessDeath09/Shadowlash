@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public Joystick joystick;
 
     float HorizontalMove = 0f;
-    public float runSpeed = 45f;
+    public float runSpeed = 65f;
     bool jump = false, crouch = false, sprint = false;
 
     // Update is called once per frame
@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
             jump = true;
             animator.SetBool("IsJumping", true);
         }
-
+/*
         if(joystick.Vertical <= -0.5f)
         {
             animator.SetBool("IsRolling", true);
@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("IsRolling", false);
             crouch = false;
-        }
+        }*/
 
 
 
