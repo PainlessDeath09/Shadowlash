@@ -6,7 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public CharacterController2D controller;
-    public Animator animator; 
+    public Animator animator;
+    public Joystick joystick;
 
     float HorizontalMove = 0f;
     public float runSpeed = 45f;
@@ -14,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {
         /* 
          * Proceeding code is for PC controls
          * 
@@ -48,11 +49,38 @@ public class PlayerMovement : MonoBehaviour
         *
         */
 
-
-        if(Input.touchCount > 0)
+        if(joystick.Horizontal >= 0.2f)
         {
-           Touch t =  Input.GetTouch(0);
+            HorizontalMove = runSpeed;
         }
+        else if(joystick.Horizontal <= -0.2f)
+        {
+            HorizontalMove = -runSpeed;
+        }
+        else
+        {
+            HorizontalMove = 0f;
+        }
+        animator.SetFloat("Speed", Mathf.Abs(HorizontalMove));
+
+        if(joystick.Vertical >= 0.5f)
+        {
+            jump = true;
+            animator.SetBool("IsJumping", true);
+        }
+
+        if(joystick.Vertical <= -0.5f)
+        {
+            animator.SetBool("IsRolling", true);
+            crouch = true;
+        }
+        else
+        {
+            animator.SetBool("IsRolling", false);
+            crouch = false;
+        }
+
+
 
     }
 
